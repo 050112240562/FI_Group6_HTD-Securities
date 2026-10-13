@@ -51,7 +51,7 @@ const EXPANDED_STOCK_POOL = [
 ];
 
 // ======================================================
-// DOBN CAPITAL — DIVERSIFIED RECOMMENDATION ENGINE
+// HTD SECURITIES — OFFLINE DEMO RECOMMENDATION ENGINE
 // Mỗi ngành tối đa MAX_PER_SECTOR mã, tổng 5 mã
 // ======================================================
 
@@ -59,12 +59,24 @@ const MAX_PER_SECTOR = 2; // tối đa 2 mã/ngành trong danh mục cuối
 
 function getRecommendations(score, riskType, horizon) {
 
+    // UI uses "Short Term"; the pool uses "Short-term". Normalize both.
+    const horizons = {
+        'short term': 'Short-term', 'short-term': 'Short-term',
+        'medium term': 'Medium-term', 'medium-term': 'Medium-term',
+        'long term': 'Long-term', 'long-term': 'Long-term'
+    };
+    horizon = horizons[String(horizon).trim().toLowerCase()];
+    const rank = { Conservative: 1, Balanced: 2, Aggressive: 3 };
+    const cap = rank[riskType];
+    if (!horizon || !cap || !Number.isFinite(score)) return [];
+    const eligible = EXPANDED_STOCK_POOL.filter(s => rank[s.type] <= cap);
+
     // ── Bước 1: lọc theo horizon ──────────────────────
-    let pool = EXPANDED_STOCK_POOL.filter(s => s.horizon === horizon);
+    let pool = eligible.filter(s => s.horizon === horizon);
 
     // ── Bước 2: nếu không đủ 5, bổ sung cùng riskType ─
     if (pool.length < 5) {
-        const extra = EXPANDED_STOCK_POOL.filter(s => s.type === riskType);
+        const extra = eligible.filter(s => s.type === riskType);
         pool = [...pool, ...extra];
     }
 
@@ -94,16 +106,7 @@ function getRecommendations(score, riskType, horizon) {
         }
     }
 
-    // ── Bước 6: fallback nếu vẫn chưa đủ 5 ──────────
-    // (trường hợp pool quá ít sector) — nới lỏng giới hạn
-    if (result.length < 5) {
-        for (const stock of pool) {
-            if (result.length >= 5) break;
-            if (!result.find(r => r.code === stock.code)) {
-                result.push(stock);
-            }
-        }
-    }
+    // Return fewer than five rather than relaxing the sector/risk limits.
 
     return result;
 }

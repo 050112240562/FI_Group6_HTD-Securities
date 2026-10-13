@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dịch Vụ Tư Vấn — HTD SECURITIES</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/profile-demo.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -363,22 +364,77 @@ body{font-family:var(--ff-b);background:var(--cream);color:var(--ink);font-weigh
 <section class="svc-hero">
   <p class="bc"><i class="fas fa-home"></i> &nbsp;Trang Chủ &nbsp;/&nbsp; Dịch Vụ Tư Vấn</p>
   <h1>Investment<br><em>Recommendation Report</em></h1>
-  <p>Điền thông tin tài chính và hoàn thành khảo sát để nhận báo cáo khuyến nghị đầu tư cá nhân hoá từ đội ngũ HTD SECURITIES.</p>
+  <p>Bắt đầu từ mô tả khách hàng, xác nhận hồ sơ và khám phá danh sách cổ phiếu theo tiêu chí phù hợp. Trải nghiệm demo chạy không cần API.</p>
   <div class="step-pills">
-    <div class="step-pill active"><span class="sp-num">1</span> Thông tin cá nhân</div>
-    <div class="step-pill"><span class="sp-num">2</span> Tình hình tài chính</div>
-    <div class="step-pill"><span class="sp-num">3</span> Khảo sát rủi ro</div>
-    <div class="step-pill"><span class="sp-num">4</span> Nhận báo cáo</div>
+    <div class="step-pill active"><span class="sp-num">1</span> Cung cấp thông tin</div>
+    <div class="step-pill"><span class="sp-num">2</span> Kiểm tra hồ sơ</div>
+    <div class="step-pill"><span class="sp-num">3</span> Xem kết quả</div>
   </div>
 </section>
 
 <!-- ══ MAIN WRAPPER ══ -->
 <div class="svc-wrapper">
 
+<div class="htd-tabs" role="tablist" aria-label="Cách sử dụng dịch vụ">
+  <button type="button" id="htdTabDemo" role="tab" aria-selected="true" aria-controls="htdDemo">Demo hồ sơ khách hàng</button>
+  <button type="button" id="htdTabManual" role="tab" aria-selected="false" aria-controls="financialForm">Nhập biểu mẫu</button>
+</div>
+
+<section id="htdDemo" class="htd-demo" role="tabpanel" aria-labelledby="htdTabDemo">
+  <div class="htd-panel">
+    <p class="htd-kicker">HTD Securities · Trợ lý hồ sơ</p>
+    <h2>Từ mô tả đến danh sách phù hợp</h2>
+    <p>Chọn một tình huống, xem hồ sơ được chuẩn bị từ mô tả, rồi xác nhận để lọc tối đa 5 cổ phiếu.</p>
+    <div class="htd-note"><strong>Chế độ demo không cần API.</strong> Bản nháp hồ sơ mô phỏng đầu ra LLM bằng tình huống có sẵn. Phần kiểm tra và lọc chạy bằng quy tắc. Phân nhóm cổ phiếu là dữ liệu demo, chưa xác minh theo thị trường hiện tại.</div>
+    <ol class="htd-flow" aria-label="Các bước demo">
+      <li class="current">1 · Mô tả khách hàng</li><li>2 · Kiểm tra &amp; xác nhận</li><li>3 · Danh sách phù hợp</li>
+    </ol>
+    <div id="htdSamples" class="htd-samples" aria-label="Tình huống khách hàng"></div>
+    <label for="htdNarrative">Nội dung khách hàng cung cấp</label>
+    <textarea id="htdNarrative" maxlength="16000" aria-describedby="htdNarrativeHelp"></textarea>
+    <p id="htdNarrativeHelp" class="htd-muted" style="margin-top:8px">Nếu sửa nội dung mẫu, demo sẽ yêu cầu tự điền hồ sơ; không tự đoán thông tin từ văn bản mới.</p>
+    <div class="htd-actions">
+      <button type="button" id="htdExtract" class="htd-primary">Xem bản nháp từ mô tả mẫu →</button>
+      <button type="button" id="htdRestore" class="htd-secondary">Khôi phục mô tả mẫu</button>
+      <button type="button" id="htdManualProfile" class="htd-secondary">Tự điền hồ sơ</button>
+    </div>
+    <div id="htdInputStatus" class="htd-status" role="status" aria-live="polite"></div>
+  </div>
+
+  <section id="htdReview" class="htd-panel" hidden aria-labelledby="htdReviewHeading">
+    <p class="htd-kicker">Bước 2 · Bạn kiểm tra thông tin</p>
+    <h2 id="htdReviewHeading">Hồ sơ đầu tư của khách hàng</h2>
+    <p id="htdDraftSource" class="htd-muted"></p>
+    <form id="htdReviewForm" novalidate>
+      <div id="htdProfileFields" class="htd-grid"></div>
+      <p class="htd-muted" style="margin-top:14px">Vốn cổ phiếu là khoản bạn dành riêng, không mặc định bằng toàn bộ tiền tiết kiệm. Không cần CCCD hay thông tin liên hệ để chạy demo.</p>
+      <details>
+        <summary>Điều chỉnh ngành ưu tiên và ngành muốn tránh (không bắt buộc)</summary>
+        <p class="htd-muted" style="margin:14px 0">Ngành ưu tiên giúp xếp hạng. Ngành muốn tránh sẽ bị loại khỏi ứng viên.</p>
+        <fieldset style="border:0"><legend>Ngành ưu tiên</legend><div id="htd_preferredSectors" class="htd-sector-grid"></div></fieldset>
+        <fieldset style="border:0;margin-top:16px"><legend>Ngành muốn tránh</legend><div id="htd_excludedSectors" class="htd-sector-grid"></div></fieldset>
+      </details>
+      <details><summary>Đối chiếu giá trị và câu gốc trong mô tả</summary><div id="htdEvidence"></div></details>
+      <div id="htdReviewStatus" class="htd-status" role="status" aria-live="polite"></div>
+      <label class="htd-check"><input type="checkbox" id="htdConfirmed" disabled><span>Tôi đã kiểm tra và xác nhận hồ sơ, bao gồm vốn, thời hạn, rủi ro và nhu cầu rút tiền.</span></label>
+      <button type="submit" id="htdRank" class="htd-primary" disabled>Lọc tối đa 5 mã theo hồ sơ →</button>
+    </form>
+  </section>
+
+  <section id="htdResults" class="htd-panel" hidden aria-labelledby="htdResultsHeading">
+    <p class="htd-kicker">Bước 3 · Kết quả từ bộ lọc demo</p>
+    <h2 id="htdResultsHeading">Danh sách cổ phiếu theo hồ sơ</h2>
+    <p class="htd-muted">Xếp hạng bằng quy tắc ngoại tuyến, dùng phân nhóm có sẵn trong web. Đây chưa phải kết quả lựa chọn của LLM trực tuyến.</p>
+    <div id="htdResultContent"></div>
+    <div class="htd-note">Kết quả minh họa mức khớp với tiêu chí demo. Không phải đánh giá giá trị hiện tại của cổ phiếu và không bảo đảm lợi nhuận. Các báo cáo có sẵn cần được kiểm tra ngày dữ liệu trước khi sử dụng.</div>
+    <button type="button" id="htdDownload" class="htd-secondary" hidden>Tải hồ sơ và kết quả (.json)</button>
+  </section>
+</section>
+
 <!-- ════════════════════════════════
      FORM
 ════════════════════════════════ -->
-<form id="financialForm">
+<form id="financialForm" role="tabpanel" aria-labelledby="htdTabManual">
 <div class="form-card reveal">
 
   <!-- card header -->
@@ -392,6 +448,8 @@ body{font-family:var(--ff-b);background:var(--cream);color:var(--ink);font-weigh
   </div>
 
   <div class="form-body">
+
+    <div class="htd-demo"><div class="htd-note">Chế độ biểu mẫu dùng bộ lọc quy tắc và phân nhóm cổ phiếu demo có sẵn. Chưa kết nối LLM hay dữ liệu thị trường hiện tại.</div></div>
 
     <!-- ── SECTION 1: CLIENT INFO ── -->
     <div class="form-section">
@@ -919,6 +977,9 @@ async function downloadPDFFile(){
   pdf.save('HTD_Securities_Report.pdf');
 }
 </script>
+
+<script src="js/htd-profile-core.js"></script>
+<script src="js/htd-profile-ui.js"></script>
 
 <!-- FOOTER -->
 <footer>

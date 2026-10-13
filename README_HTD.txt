@@ -1,6 +1,23 @@
-BẢN WEBSITE HTD ĐÃ RÀ SOÁT
+BẢN WEBSITE HTD — CẬP NHẬT DEMO HỒ SƠ KHÁCH HÀNG
 
-Cách dùng: Giải nén ZIP. Mở thư mục HTD_Website trong VS Code và chạy index.html bằng Live Server.
+Cách dùng: Giải nén ZIP. Mở thư mục web_htd trong VS Code và chạy index.html bằng Live Server.
+
+MỚI: Vào Services (customer.html) → Demo hồ sơ khách hàng.
+- 3 hồ sơ đầy đủ và 1 tình huống thiếu thông tin.
+- Mô phỏng đầu ra trích xuất LLM từ mô tả mẫu, kèm câu gốc để đối chiếu.
+- Cho sửa hồ sơ, chỉ lọc sau khi đủ thông tin và được khách hàng xác nhận.
+- Lọc/xếp hạng tối đa 5 mã bằng quy tắc ngoại tuyến, có lý do từng mã.
+- Không tự nới giới hạn ngành/rủi ro để đủ 5. Sửa hồ sơ sẽ hủy kết quả cũ.
+- Có cách tự điền hồ sơ và tải hồ sơ/kết quả JSON.
+- Giữ biểu mẫu khảo sát và PDF cũ trong tab Nhập biểu mẫu.
+- Sửa tên thời hạn bị lệch giữa biểu mẫu cũ và bộ lọc.
+- Phần demo mới không cần API; không gửi hồ sơ qua mạng.
+- Phân nhóm cổ phiếu có sẵn chưa được xác minh theo thị trường hiện tại.
+- Mô phỏng hồ sơ và bộ lọc quy tắc không được gọi là kết quả LLM trực tuyến.
+- Chưa cập nhật website đang host trên GitHub: cần upload/commit file mới.
+
+Hướng dẫn trình bày, tích hợp API và file cần thay: docs/DEMO_HOSO_HTD.md.
+Kiểm tra: node --test tests/*.test.cjs (không gọi API).
 
 Đã cập nhật:
 - Tên công ty HTD SECURITIES trên các trang chính: trang chủ, giới thiệu, sản phẩm, quan hệ cổ đông, tin tức, hỗ trợ, ESG, cổ phiếu và báo cáo tư vấn.
