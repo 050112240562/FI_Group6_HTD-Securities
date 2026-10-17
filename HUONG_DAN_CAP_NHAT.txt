@@ -1,0 +1,49 @@
+HTD SECURITIES - CAP NHAT FRT VA TAO PROMPT
+
+1. Phien ban nay gom:
+- Bao cao FRT 3 trang: tong quan, cau chuyen phan I, cau chuyen phan II.
+- Gia tham chieu 130.100 dong/cp ngay 21/09/2026 theo sheet Summary.
+- Khung xem bao cao voi chuyen trang, phong to, mo anh va PDF.
+- O "Phan tich ma khac": nhap ma, kiem tra ten trong danh sach co san,
+  chon ngay chot/ngon ngu, tao prompt, sao chep hoac tai TXT.
+- Khong can API AI; bao cao moi duoc tao khi dan prompt vao ChatGPT.
+
+2. Cap nhat website GitHub Pages dang co:
+- Giai nen ZIP. Tim thu muc web_htd.
+- Mo dung thu muc repository dang chua stocks.html va stocks1.html.
+- Chep noi dung ben trong web_htd vao do, giu nguyen cay thu muc
+  js/, png/ va reports/. Ghi de cac file trung ten.
+- Neu repository da dung thu muc web_htd lam goc, cap nhat vao chinh
+  thu muc web_htd do; tranh long them web_htd/web_htd.
+- Commit thay doi, doi GitHub Pages cap nhat, tai lai trang Stock.
+- Neu con giao dien/anh cu, thu tai lai bo nho dem hoac cua so rieng tu.
+
+3. ZIP day du chua toan bo website.
+   ZIP HTD_Update_FRT_Prompt_Only.zip chi chua cac file moi/thay doi.
+   Chi can dung mot trong hai de cap nhat repository dung phien ban goc.
+
+4. Cach dung:
+- Bam FRT: dung Truoc/Sau hoac phim mui ten de xem 3 trang.
+- Tren dien thoai co the vuot ngang khi chua phong to.
+- Ma khac van co 1 trang; nut chuyen trang duoc an.
+- O tao prompt nam cuoi danh sach va van xuat hien khi loc/tim kiem.
+- Ma ngoai danh sach khong duoc xem la da xac minh; prompt yeu cau AI
+  kiem tra lai ten doanh nghiep va san giao dich.
+- Sao chep prompt, mo ChatGPT, bat tim kiem web, dan va gui prompt.
+  Ket qua chua tu dang len website.
+
+5. Du lieu FRT:
+- Bang/bieu do dung so lieu tu workbook nguoi dung cung cap.
+- Cac gia tri F la du phong cua nhom.
+- Von hoa, EPS va ty so theo co so mo hinh, co chu thich trong bao cao.
+- Chi tieu phan khuc Long Chau va lich su doanh nghiep theo 4 slide
+  da cung cap; chua duoc doi chieu doc lap voi nguon cong bo.
+- Chi tiet co so tinh va vi tri o Excel: reports/FRT_DATA_NOTES.txt.
+
+6. Da kiem tra:
+- 3 trang PDF/PNG, cac so chinh va tinh toan lai P/E, P/B.
+- Cu phap JavaScript va luong chuc nang bang kiem tra mo phong DOM.
+- Tep dinh kem, lien ket bao cao va tinh toan ven ZIP.
+- Chua chay thu truc tiep tren trinh duyet Safari/Chrome hay iPhone.
+
+Ban nay la goi cap nhat ma nguon, chua duoc day len GitHub/live website.
