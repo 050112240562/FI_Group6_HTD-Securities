@@ -1,9 +1,7 @@
-/* HTD Stock Center: local report viewer and prompt builder. No AI API calls. */
+/* HTD Stock Center: new-tab report links and prompt builder. No AI API calls. */
 (function () {
   'use strict';
-  const FRT_PAGES = ['png/FRT.png', 'png/FRT_2.png', 'png/FRT_3.png'];
-  const FRT_TITLES = ['Tổng quan doanh nghiệp', 'Vì sao FRT phải đổi mình?', 'Đổi mình đã hiệu quả chưa?'];
-  let lastFocus = null, report = null, pageIndex = 0, zoomed = false, touchStart = null;
+  let lastFocus = null;
   let promptTicker = '', promptName = '';
   const $ = id => document.getElementById(id);
   const todayVN = () => {
@@ -60,39 +58,6 @@ I. Kết luận: luận điểm chính, điểm phản biện mạnh nhất, đi
   function dialogClosed() {
     if (!document.querySelector('.htd-dialog[open]')) document.body.classList.remove('htd-dialog-open');
     if (lastFocus && lastFocus.isConnected) lastFocus.focus();
-  }
-  function renderReport() {
-    const img = $('htdReportImage');
-    $('htdReportError').hidden = true;
-    $('htdReportLoading').hidden = false;
-    img.hidden = false;
-    img.alt = `${report.code}: ${report.titles[pageIndex]}`;
-    img.src = report.pages[pageIndex];
-    $('htdReportTitle').textContent = `${report.code} · ${report.name}`;
-    $('htdReportSubtitle').textContent = report.titles[pageIndex];
-    $('htdPageCount').textContent = `Trang ${pageIndex + 1} / ${report.pages.length}`;
-    $('htdReportNav').hidden = report.pages.length < 2;
-    $('htdPrevPage').disabled = pageIndex === 0;
-    $('htdNextPage').disabled = pageIndex === report.pages.length - 1;
-    $('htdOpenImage').href = report.pages[pageIndex];
-    $('htdReportPdf').hidden = report.code !== 'FRT';
-    $('htdReportViewport').scrollTop = 0;
-    $('htdReportViewport').scrollLeft = 0;
-    zoomed = false; syncZoom();
-  }
-  function syncZoom() {
-    $('htdReportViewport').classList.toggle('is-zoomed', zoomed);
-    $('htdZoom').textContent = zoomed ? 'Vừa khung' : 'Phóng to';
-    $('htdZoom').setAttribute('aria-pressed', String(zoomed));
-  }
-  function openReport(stock) {
-    const code = stock.code;
-    report = {code, name:stock.name, pages:code === 'FRT' ? FRT_PAGES : [`png/${code === 'BID' ? 'BIDV' : code}.png`], titles:code === 'FRT' ? FRT_TITLES : ['Báo cáo phân tích']};
-    pageIndex = 0; renderReport(); showDialog($('htdReportDialog'));
-  }
-  function stepPage(delta) {
-    const next = pageIndex + delta;
-    if (report && next >= 0 && next < report.pages.length) { pageIndex = next; renderReport(); }
   }
   function resetPromptResult() {
     $('htdPromptResult').hidden = true; $('htdCopyStatus').textContent = '';
@@ -159,13 +124,6 @@ I. Kết luận: luận điểm chính, điểm phản biện mạnh nhất, đi
     if (!$('companyGrid')) return;
     const shell = document.createElement('div');
     shell.innerHTML = `
-    <dialog class="htd-dialog htd-report-dialog" id="htdReportDialog" aria-labelledby="htdReportTitle">
-      <div class="htd-dialog-shell">
-        <div class="htd-dialog-header"><div><p class="htd-eyebrow">HTD SECURITIES · EQUITY RESEARCH</p><h2 id="htdReportTitle"></h2><p id="htdReportSubtitle"></p></div><button type="button" class="htd-close" data-close="htdReportDialog" aria-label="Đóng báo cáo">×</button></div>
-        <div class="htd-report-toolbar"><div id="htdReportNav" class="htd-page-nav"><button type="button" id="htdPrevPage" aria-label="Trang trước">← Trước</button><span id="htdPageCount" aria-live="polite"></span><button type="button" id="htdNextPage" aria-label="Trang sau">Sau →</button></div><div class="htd-report-actions"><button type="button" id="htdZoom" aria-pressed="false">Phóng to</button><a id="htdOpenImage" target="_blank" rel="noopener">Mở ảnh</a><a id="htdReportPdf" href="reports/FRT_HTD_3_Pages.pdf" target="_blank" rel="noopener">PDF 3 trang</a></div></div>
-        <div class="htd-report-viewport" id="htdReportViewport"><p id="htdReportLoading" class="htd-report-status" role="status">Đang mở trang báo cáo…</p><p id="htdReportError" class="htd-report-status" role="alert" hidden>Không mở được ảnh. Bạn có thể thử nút Mở ảnh hoặc PDF.</p><img id="htdReportImage" alt=""></div>
-      </div>
-    </dialog>
     <dialog class="htd-dialog htd-prompt-dialog" id="htdPromptDialog" aria-labelledby="htdPromptTitle">
       <div class="htd-dialog-shell"><div class="htd-dialog-header"><div><p class="htd-eyebrow">HTD RESEARCH ASSISTANT</p><h2 id="htdPromptTitle">Phân tích mã khác</h2><p>Tạo yêu cầu phân tích theo cấu trúc báo cáo HTD.</p></div><button type="button" class="htd-close" data-close="htdPromptDialog" aria-label="Đóng cửa sổ tạo prompt">×</button></div>
       <div class="htd-prompt-body"><div class="htd-howto"><b>1. Nhập mã</b><span>→</span><b>2. Tạo & sao chép prompt</b><span>→</span><b>3. Dán vào ChatGPT</b></div><p class="htd-hint">Bật tìm kiếm web trong ChatGPT để lấy và kiểm tra dữ liệu. Báo cáo được tạo trong ChatGPT; kết quả chưa tự đăng lên website.</p>
@@ -179,28 +137,7 @@ I. Kết luận: luận điểm chính, điểm phản biện mạnh nhất, đi
       d.addEventListener('click', e => { if (e.target === d) closeDialog(d); });
     });
     shell.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeDialog($(b.dataset.close))));
-    $('companyGrid').addEventListener('click', event => {
-      const link = event.target.closest('a.company-card');
-      if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button > 0) return;
-      const code = link.querySelector('.cc-code')?.textContent.trim();
-      const stock = pool().find(s => s.code === code);
-      if (stock) { event.preventDefault(); openReport(stock); }
-    });
     new MutationObserver(addPromptCard).observe($('companyGrid'), {childList:true}); addPromptCard();
-    $('htdPrevPage').addEventListener('click', () => stepPage(-1));
-    $('htdNextPage').addEventListener('click', () => stepPage(1));
-    $('htdZoom').addEventListener('click', () => { zoomed = !zoomed; syncZoom(); });
-    $('htdReportImage').addEventListener('load', () => { $('htdReportLoading').hidden = true; });
-    $('htdReportImage').addEventListener('error', () => { $('htdReportLoading').hidden = true; $('htdReportError').hidden = false; $('htdReportImage').hidden = true; });
-    document.addEventListener('keydown', e => {
-      if (!$('htdReportDialog').open || e.altKey || e.ctrlKey || e.metaKey) return;
-      if (e.key === 'ArrowRight') { e.preventDefault(); stepPage(1); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); stepPage(-1); }
-    });
-    $('htdReportViewport').addEventListener('touchstart', e => { if (e.touches.length === 1) touchStart = {x:e.touches[0].clientX,y:e.touches[0].clientY}; else touchStart = null; }, {passive:true});
-    $('htdReportViewport').addEventListener('touchend', e => {
-      if (touchStart && !zoomed && e.changedTouches.length === 1) { const dx=e.changedTouches[0].clientX-touchStart.x,dy=e.changedTouches[0].clientY-touchStart.y; if (Math.abs(dx)>70 && Math.abs(dx)>Math.abs(dy)*1.5) stepPage(dx<0?1:-1); } touchStart=null;
-    }, {passive:true});
     $('htdTicker').addEventListener('input', updateCompany);
     ['htdCompanyName','htdAsOf','htdLanguage'].forEach(id => $(id).addEventListener('input', resetPromptResult));
     $('htdPromptForm').addEventListener('submit', submitPrompt);

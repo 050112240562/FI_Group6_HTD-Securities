@@ -1,0 +1,24 @@
+HTD — SỬA FRT MỞ TAB MỚI (17/10/2026)
+
+Cách cập nhật GitHub:
+1. Giải nén HTD_FRT_Mo_Tab_Moi.zip.
+2. Trên GitHub, mở đúng thư mục đang chứa stocks.html của website đang chạy.
+3. Chọn Add file > Upload files. Kéo TOÀN BỘ NỘI DUNG BÊN TRONG thư mục web_htd
+   vào đó (không kéo nguyên thư mục web_htd và không tải tệp ZIP lên).
+4. Ghi đè tệp trùng tên, commit rồi đợi quy trình Pages cập nhật thành công.
+5. Mở lại trang Stock bằng cửa sổ riêng tư để kiểm tra.
+
+Kết quả:
+- Các mã có sẵn mở ảnh gốc trong tab mới như trước.
+- FRT mở tab mới gồm 3 ảnh cuộn dọc; bấm vào từng ảnh để mở ảnh gốc/phóng to.
+- Không còn khung nổi xem báo cáo.
+- Ô tạo prompt vẫn hoạt động.
+- Các ảnh FRT mới dùng tên FRT_20261017_1.png, _2.png, _3.png để tránh cache cũ.
+- Các ảnh của doanh nghiệp khác không thay đổi.
+
+Gói này dựa trên stocks.html/stocks1.html đọc trực tiếp từ website đang chạy
+ngày 17/10/2026 và code tạo prompt đã làm trong cuộc trò chuyện này.
+ZIP mới người dùng gửi không tải xuống được; chưa đối chiếu các thay đổi
+chưa xuất hiện trên website đang chạy.
+Đã kiểm tra cú pháp, thao tác tạo prompt bằng mô phỏng DOM, liên kết và ảnh.
+Chưa kiểm tra giao diện trực tiếp bằng trình duyệt. Chưa đẩy gói này lên GitHub.

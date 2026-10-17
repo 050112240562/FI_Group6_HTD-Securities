@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stock Center — HTD SECURITIES</title>
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="stock-tools.css">
+<link rel="stylesheet" href="stock-tools.css?v=20261017-newtab3">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Sora:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -351,7 +351,7 @@ function renderCards(list) {
     const ex    = (stock.exchange || '').toUpperCase().trim();
     const badge = EXCHANGE_BADGE[ex] || '';
     const a = document.createElement('a');
-    a.href        = stock.code === 'FRT' ? 'reports/FRT_HTD_3_Pages.pdf' : `png/${stock.code === 'BID' ? 'BIDV' : stock.code}.png`;
+    a.href        = stock.code === 'FRT' ? 'reports/frt.html?v=20261017-newtab3' : `png/${stock.code === 'BID' ? 'BIDV' : stock.code}.png`;
     a.target      = '_blank';
     a.rel         = 'noopener';
     a.className   = 'company-card';
@@ -552,6 +552,6 @@ window.addEventListener('DOMContentLoaded', () => {
   setDefaultDates();
 });
 </script>
-<script src="js/stock-tools.js"></script>
+<script src="js/stock-tools.js?v=20261017-newtab3"></script>
 </body>
 </html>
